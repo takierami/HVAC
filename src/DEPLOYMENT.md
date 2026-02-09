@@ -1,64 +1,60 @@
 # Deployment Guide for HVAC Pro Website
 
-## 🚀 Deploying to Vercel
+## 🚀 Deploying to Netlify (Recommended)
 
-Vercel is the recommended platform for deploying this Vite + React application.
+Netlify is now the recommended platform for deploying this Vite + React application.
 
-### Method 1: Deploy via Vercel Dashboard (Recommended)
+### Method 1: Deploy via Netlify Dashboard (Automatic)
 
 1. **Push to Git Repository**
    ```bash
    git init
    git add .
-   git commit -m "Initial commit"
+   git commit -m "Switching to Netlify deployment"
    git branch -M main
    git remote add origin YOUR_REPO_URL
    git push -u origin main
    ```
 
-2. **Import to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "Import Project"
-   - Connect your Git provider (GitHub, GitLab, or Bitbucket)
+2. **Connect to Netlify**
+   - Go to [app.netlify.com](https://app.netlify.com)
+   - Click "Add new site" → "Import an existing project"
+   - Select your Git provider (GitHub, GitLab, or Bitbucket)
    - Select your repository
-   - Vercel will auto-detect the Vite framework settings
 
 3. **Configure Project (Auto-detected)**
-   - Framework Preset: Vite
    - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm install`
+   - Publish directory: `dist`
+   - The project includes a `netlify.toml` which will automatically configure routing and environment settings.
 
 4. **Deploy**
-   - Click "Deploy"
-   - Your site will be live in ~60 seconds!
+   - Click "Deploy [repository name]"
+   - Your site will be live shortly!
 
-### Method 2: Deploy via Vercel CLI
+### Method 2: Deploy via Netlify CLI
 
-1. **Install Vercel CLI**
+1. **Install Netlify CLI**
    ```bash
-   npm i -g vercel
+   npm install netlify-cli -g
    ```
 
-2. **Login to Vercel**
+2. **Login and Init**
    ```bash
-   vercel login
+   netlify login
+   netlify init
    ```
 
 3. **Deploy**
    ```bash
-   # Preview deployment
-   vercel
-   
    # Production deployment
-   vercel --prod
+   netlify deploy --prod
    ```
 
 ## 🔧 Build Configuration
 
 The project includes all necessary configuration files:
 
-- ✅ `vercel.json` - Vercel-specific configuration
+- ✅ `netlify.toml` - Netlify-specific configuration
 - ✅ `vite.config.ts` - Build and development settings
 - ✅ `package.json` - Dependencies and scripts
 - ✅ `tsconfig.json` - TypeScript configuration
@@ -81,10 +77,10 @@ Before deploying, ensure:
 
 If you need environment variables:
 
-1. **In Vercel Dashboard:**
-   - Go to Project Settings → Environment Variables
+1. **In Netlify Dashboard:**
+   - Go to Site Settings → Build & Deploy → Environment variables
    - Add your variables
-   - Redeploy for changes to take effect
+   - Trigger a new deploy for changes to take effect
 
 2. **Common Variables:**
    ```
@@ -94,25 +90,25 @@ If you need environment variables:
 
 ## 🔄 Continuous Deployment
 
-Once connected to Git, Vercel automatically:
+Once connected to Git, Netlify automatically:
 - Deploys on every push to main branch (production)
-- Creates preview deployments for pull requests
-- Runs build checks before deploying
+- Creates branch previews for other branches
+- Creates Deploy Previews for pull requests
 
 ## 🎯 Domain Configuration
 
 ### Custom Domain
 
-1. Go to Project Settings → Domains
+1. Go to Site Settings → Domain management
 2. Add your custom domain
-3. Configure DNS records as instructed
-4. SSL certificate is automatically provisioned
+3. Configure DNS records (Netlify UI will provide instructions)
+4. SSL/TLS is automatically provisioned via Let's Encrypt
 
 ### Default Domain
 
 Your app will be available at:
 ```
-https://your-project-name.vercel.app
+https://your-project-name.netlify.app
 ```
 
 ## 📊 Performance Optimization
@@ -147,11 +143,12 @@ npm run build
 
 **Issue**: 404 on page refresh
 
-The `vercel.json` includes rewrites to handle SPA routing:
-```json
-"rewrites": [
-  { "source": "/(.*)", "destination": "/index.html" }
-]
+The `netlify.toml` includes a redirect rule to handle SPA routing:
+```toml
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 ```
 
 ### Images Not Loading
@@ -171,9 +168,9 @@ After successful deployment:
    - Test on mobile devices
 
 2. **Monitor Performance**
-   - Use Vercel Analytics (built-in)
-   - Check Core Web Vitals
-   - Monitor error logs
+   - Use Netlify Analytics (if enabled)
+   - Check Netlify Build logs
+   - Monitor for any failed deploys
 
 3. **SEO Setup**
    - Submit sitemap to Google Search Console
@@ -182,16 +179,13 @@ After successful deployment:
 
 ## 🔐 Security
 
-Security headers are configured in `vercel.json`:
-- X-Content-Type-Options: nosniff
-- X-Frame-Options: DENY
-- X-XSS-Protection: 1; mode=block
+Security headers can be configured in your `netlify.toml` file or through the Netlify UI. The current configuration handles basic SPA routing and environment settings.
 
 ## 📞 Support
 
-### Vercel Documentation
-- [Vercel Docs](https://vercel.com/docs)
-- [Vite on Vercel](https://vercel.com/docs/frameworks/vite)
+### Netlify Documentation
+- [Netlify Docs](https://docs.netlify.com)
+- [Vite on Netlify](https://www.netlify.com/with/vite/)
 
 ### Common Commands
 ```bash
@@ -207,16 +201,16 @@ npm run build
 # Preview production build
 npm run preview
 
-# Deploy to Vercel
-vercel --prod
+# Deploy to Netlify
+netlify deploy --prod
 ```
 
 ## ✅ Deployment Complete!
 
 Your HVAC Pro website is now live and ready to convert visitors into customers!
 
-🌐 **Live URL**: Check your Vercel dashboard
-📊 **Analytics**: Available in Vercel dashboard
+🌐 **Live URL**: Check your Netlify dashboard
+📊 **Analytics**: Available in Netlify dashboard
 🚀 **Updates**: Push to Git to auto-deploy
 
 ---
